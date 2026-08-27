@@ -1,0 +1,60 @@
+https://leetcode.com/problems/lexicographically-smallest-permutation-greater-than-target/
+
+import java.util.*;
+
+class Solution {
+    public String lexGreaterPermutation(String s, String target) {
+        int n = s.length();
+        int[] count = new int[26];
+        for (char c : s.toCharArray()) {
+            count[c - 'a']++;
+        }
+
+        // Try to match target[0...i-1] exactly, then choose a strictly greater character at index i
+        for (int i = n - 1; i >= 0; i--) {
+            int[] tempCount = count.clone();
+            boolean possible = true;
+
+            // Check if we can form target[0...i-1]
+            for (int j = 0; j < i; j++) {
+                int idx = target.charAt(j) - 'a';
+                if (tempCount[idx] <= 0) {
+                    possible = false;
+                    break;
+                }
+                tempCount[idx]--;
+            }
+
+            if (!possible) continue;
+
+            // Try to find the smallest char > target[i] available in tempCount
+            int targetChar = target.charAt(i) - 'a';
+            int nextChar = -1;
+            for (int c = targetChar + 1; c < 26; c++) {
+                if (tempCount[c] > 0) {
+                    nextChar = c;
+                    break;
+                }
+            }
+
+            if (nextChar != -1) {
+                // Construct result
+                StringBuilder sb = new StringBuilder();
+                sb.append(target.substring(0, i));
+                sb.append((char) ('a' + nextChar));
+                tempCount[nextChar]--;
+
+                // Append remaining characters in ascending order
+                for (int c = 0; c < 26; c++) {
+                    while (tempCount[c] > 0) {
+                        sb.append((char) ('a' + c));
+                        tempCount[c]--;
+                    }
+                }
+                return sb.toString();
+            }
+        }
+
+        return "";
+    }
+}
