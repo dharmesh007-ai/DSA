@@ -1,5 +1,9 @@
 https://leetcode.com/problems/lexicographically-smallest-permutation-greater-than-target/
+ 
 
+ problem 3720
+
+ 
 import java.util.*;
 
 class Solution {
