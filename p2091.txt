@@ -1,0 +1,28 @@
+https://leetcode.com/problems/removing-minimum-and-maximum-from-array/
+
+class Solution {
+    public int minimumDeletions(int[] nums) {
+        int n = nums.length;
+        if (n <= 2) return n;
+
+        int minIdx = 0;
+        int maxIdx = 0;
+
+        for (int k = 0; k < n; k++) {
+            if (nums[k] < nums[minIdx]) minIdx = k;
+            if (nums[k] > nums[maxIdx]) maxIdx = k;
+        }
+
+        int i = Math.min(minIdx, maxIdx);
+        int j = Math.max(minIdx, maxIdx);
+
+        // 1. Both from front
+        int bothFront = j + 1;
+        // 2. Both from back
+        int bothBack = n - i;
+        // 3. One from front, one from back
+        int split = (i + 1) + (n - j);
+
+        return Math.min(bothFront, Math.min(bothBack, split));
+    }
+}
